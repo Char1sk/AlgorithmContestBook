@@ -1,0 +1,10 @@
+# vscode
+launch.json
+tasks.json
+
+# notes
+*.ppt
+*.pptx
+
+# others
+description.txt
