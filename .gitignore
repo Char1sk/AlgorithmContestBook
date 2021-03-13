@@ -1,6 +1,5 @@
 # vscode
-launch.json
-tasks.json
+.vscode
 
 # notes
 *.ppt
