@@ -11,6 +11,8 @@ std::vector<std::map<int, int>> graph;
 int minDist[maxN];
 // color on the minimum path
 int minColor[maxN];
+// visited vertexes to be true
+bool hasVisited[maxN];
 
 int main()
 {
@@ -42,19 +44,23 @@ int main()
         std::queue<int> bfsQ;
         
         memset(minDist, 0, sizeof(minDist));
+        memset(hasVisited, 0, sizeof(hasVisited));
         bfsQ.push(verCnt);
+        hasVisited[verCnt] = true;
         while (!bfsQ.empty())
         {
             int now = bfsQ.front();
             bfsQ.pop();
+            
             int nextDist = minDist[now] + 1;
             for (auto &p : graph[now])
             {
                 int thisDist = minDist[p.first];
-                if (p.first != verCnt && (thisDist == 0 || thisDist > nextDist))
+                if (!hasVisited[p.first] && p.first != verCnt && (thisDist == 0 || thisDist > nextDist))
                 {
                     minDist[p.first] = nextDist;
                     bfsQ.push(p.first);
+                    hasVisited[p.first] = true;
                 }
             }
         }
@@ -62,11 +68,14 @@ int main()
         std::cout << minD << std::endl;
         
         memset(minColor, 0, sizeof(minColor));
+        memset(hasVisited, 0, sizeof(hasVisited));
         bfsQ.push(1);
+        hasVisited[1] = true;
         while (!bfsQ.empty())
         {
             int now = bfsQ.front();
             bfsQ.pop();
+            
             int &nowColor = minColor[minDist[now]];
             for (auto &p : graph[now])
             {
@@ -79,9 +88,10 @@ int main()
             for (auto &p : graph[now])
             {
                 int thisColor = p.second;
-                if (nowColor == thisColor)
+                if (minDist[now] == minDist[p.first]+1 && !hasVisited[p.first] && nowColor == thisColor)
                 {
                     bfsQ.push(p.first);
+                    hasVisited[p.first] = true;
                 }
             }
         }
