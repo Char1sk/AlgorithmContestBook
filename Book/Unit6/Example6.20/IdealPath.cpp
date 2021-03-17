@@ -1,16 +1,22 @@
 #include <iostream>
 #include <map>
 #include <queue>
+#include <cstring>
+
+const int maxN = 100000+1;
 
 // v1 to v2 with weight w
 std::vector<std::map<int, int>> graph;
 // minimum distance from i to n
-std::vector<int> minDist;
+int minDist[maxN];
 // color on the minimum path
-std::vector<int> minColor;
+int minColor[maxN];
 
 int main()
 {
+    // freopen("./in.txt", "r", stdin);
+    // freopen("./out.txt", "w", stdout);
+    
     int verCnt, edgCnt;
     while (std::cin >> verCnt >> edgCnt)
     {
@@ -35,8 +41,7 @@ int main()
         
         std::queue<int> bfsQ;
         
-        minDist.clear();
-        minDist.resize(verCnt+1);
+        memset(minDist, 0, sizeof(minDist));
         bfsQ.push(verCnt);
         while (!bfsQ.empty())
         {
@@ -56,8 +61,7 @@ int main()
         int minD = minDist[1];
         std::cout << minD << std::endl;
         
-        minColor.clear();
-        minColor.resize(minD+1);
+        memset(minColor, 0, sizeof(minColor));
         bfsQ.push(1);
         while (!bfsQ.empty())
         {
