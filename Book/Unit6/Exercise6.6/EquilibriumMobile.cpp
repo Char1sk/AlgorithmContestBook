@@ -1,42 +1,26 @@
 #include <iostream>
 #include <string>
-#include <vector>
 #include <queue>
+#include <map>
 
-struct Node
+void countWeightedWeight(std::map<long long, int> &wwCount, const std::string &input, std::queue<int> sepList[20],
+              int left, int right, int layer, int &total)
 {
-    long long weight;
-    int leftIndex;
-    int rightIndex;
-    Node(long long w = 0, int li = -1, int ri = -1) : weight(w), leftIndex(li), rightIndex(ri) {}
-};
-
-int buildTree(std::vector<Node> &v, const std::string &s, std::queue<int> sepList[20],
-              int left, int right, long long &weight, int layer)
-{
-    int selfIndex = v.size();
-    v.emplace_back();
-    if (s[left] == '[')
+    if (input[left] == '[')
     {
         ++layer;
         int sep = sepList[layer].front();
         sepList[layer].pop();
         
-        long long lw = 0, rw = 0;
-        int li = buildTree(v, s, sepList, left+1, sep, lw, layer);
-        int ri = buildTree(v, s, sepList, sep+1, right, rw, layer);
-        weight = lw + rw;
-        v[selfIndex].weight = lw + rw;
-        v[selfIndex].leftIndex = li;
-        v[selfIndex].rightIndex = ri;
+        countWeightedWeight(wwCount, input, sepList, left+1 , sep, layer, total);
+        countWeightedWeight(wwCount, input, sepList, sep+1, right, layer, total);
     }
     else
     {
-        long long val = std::stoll(s.substr(left, right-left));
-        weight = val;
-        v[selfIndex].weight = val;
+        long long val = std::stoll(input.substr(left, right-left));
+        ++wwCount[ ((long long)1 << layer) * val];
+        ++total;
     }
-    return selfIndex;
 }
 
 int main()
@@ -47,8 +31,6 @@ int main()
     {
         std::string input;
         std::cin >> input;
-        std::vector<Node> tree;
-        long long useless = 0;
         
         std::queue<int> sepList[20];
         for (int i = 0, layer = 0; i < input.size(); ++i)
@@ -68,8 +50,19 @@ int main()
             }
         }
         
-        buildTree(tree, input, sepList, 0, input.size(), useless, 0);
-        std::cout << "sb" << std::endl;////
+        int totalCount = 0;
+        std::map<long long, int> weightedWeightCount;
+        countWeightedWeight(weightedWeightCount, input, sepList, 0, input.size(), 0, totalCount);
+        
+        int maxCount = 0;
+        for (auto &p : weightedWeightCount)
+        {
+            if (maxCount < p.second)
+            {
+                maxCount = p.second;
+            }
+        }
+        std::cout << totalCount - maxCount << std::endl;
     }
     return 0;
 }
