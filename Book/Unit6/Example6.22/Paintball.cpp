@@ -105,7 +105,7 @@ int main()
         }
         else
         {
-            printf("%.2lf %.2lf %.2lf %.2lf\n", 0, leftMin, maxN, rightMin);
+            printf("%.2lf %.2lf %.2lf %.2lf\n", 0.00, leftMin, maxN, rightMin);
         }
         
         
