@@ -47,6 +47,7 @@ void placeQueen(bool board[maxN][maxN], int row)
 
 int main()
 {
+    freopen("./out.txt", "w", stdout);
     bool board[maxN][maxN];
     memset(board, 0, sizeof(board));
     placeQueen(board, 0);
