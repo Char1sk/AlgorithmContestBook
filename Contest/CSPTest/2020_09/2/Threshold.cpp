@@ -1,37 +1,45 @@
 #include <iostream>
-#include <vector>
+#include <map>
+#include <set>
 
 int main()
 {
     int cnt;
     std::cin >> cnt;
-    std::vector<int> safety(cnt);
-    std::vector<int> passed(cnt);
+    std::map<int, int> scoreToPass;
+    std::map<int, int> scoreToFail;
+    std::set<int> scores;
+    int passCnt = 0;
     for (int i = 0; i < cnt; ++i)
     {
-        std::cin >> safety[i] >> passed[i];
+        int score;
+        bool isPassed;
+        std::cin >> score >> isPassed;
+        scores.insert(score);
+        if (isPassed)
+        {
+            ++passCnt;
+            ++scoreToPass[score];
+        }
+        else
+        {
+            ++scoreToFail[score];
+        }
     }
     
     int maxPrecision = 0;
     int maxThreshold = 0;
-    for (int i = 0; i < cnt; ++i)
+    int nowPrecision = passCnt;
+    for (int s : scores)
     {
-        int nowPrecision = 0;
-        int nowThreshold = safety[i];
-        for (int j = 0; j < cnt; ++j)
-        {
-            if (safety[j] >= nowThreshold && passed[j] || 
-                safety[j] < nowThreshold && !passed[j])
-            {
-                ++nowPrecision;
-            }
-        }
-        if (nowPrecision > maxPrecision || 
-            nowPrecision == maxPrecision && nowThreshold > maxThreshold)
+        int nowThreshold = s;
+        if (nowPrecision >= maxPrecision)
         {
             maxPrecision = nowPrecision;
             maxThreshold = nowThreshold;
         }
+        nowPrecision -= scoreToPass[s];
+        nowPrecision += scoreToFail[s];
     }
     std::cout << maxThreshold << std::endl;
     return 0;
