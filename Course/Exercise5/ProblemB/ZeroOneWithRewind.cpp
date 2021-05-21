@@ -48,6 +48,10 @@ double getUpperBound(int idx, int nowValue, int restWeight)
 double maxValue = 0.0;
 void chooseItem(int idx, int nowValue, int restWeight)
 {
+    if (nowValue > maxValue)
+    {
+        maxValue = nowValue;
+    }
     if (idx >= N)
     {
         maxValue = nowValue;
