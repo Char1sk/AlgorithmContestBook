@@ -4,7 +4,7 @@
 #include <cstring>
 
 const int maxN = 50+5;
-bool adjMat[maxN][maxN];
+int adjMat[maxN][maxN];
 
 struct Node
 {
@@ -27,7 +27,7 @@ struct Node
     }
     bool operator<(const Node &n) const
     {
-        return upperBound < n.upperBound;
+        return (upperBound < n.upperBound) || (upperBound == n.upperBound && level < n.level);
     }
 };
 
@@ -42,7 +42,7 @@ int main()
         {
             for (int j = 0; j < vcnt; ++j)
             {
-                std::cin >> adjMat[i][j];
+                scanf("%d", &adjMat[i][j]);
             }
         }
         
